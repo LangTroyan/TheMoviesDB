@@ -36,7 +36,7 @@ enum Requestable: URLRequestConvertible {
     }
     
     private var language: String {
-        let currentDeviceLanguage = Locale.preferredLanguages.first
+        let currentDeviceLanguage = Locale.current.languageCode
         switch currentDeviceLanguage {
         case "es":
             return "es-ES"

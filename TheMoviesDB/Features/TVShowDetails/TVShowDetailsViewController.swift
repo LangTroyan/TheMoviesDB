@@ -9,11 +9,11 @@ import UIKit
 import Alamofire
 import Kingfisher
 
-class MovieDetailsViewControler: BaseViewController {
+class TVShowDetailsViewController: BaseViewController {
 
     // MARK: - Properties -
     
-    var tvShow: TVShow?
+    var tvshow: TVShow?
     
     // MARK: Outlets
     @IBOutlet weak var backdropImageView: UIImageView!
@@ -40,12 +40,22 @@ class MovieDetailsViewControler: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        if let backdropPath = tvShow?.backdropPath,
+        guard let tvshow = tvshow else {
+            return
+        }
+        if let backdropPath = tvshow.backdropPath,
            let imageUrl = URL(string: TVShow.Constants.baseImagePath + backdropPath) {
             backdropImageView.kf.setImage(with: imageUrl)
         }
+        
+        titleLabel.text = tvshow.title
+        originalTitleLabel.text = LocalizableKeys.tvshowOriginalTitleLabel.localized
+        originalTitleValueLabel.text = tvshow.originalTitle
+        originalLanguageLabel.text = LocalizableKeys.tvshowOriginalLanguageLabel.localized
+        originalLanguageValueLabel.text = tvshow.originalLanguage
+        overviewLabel.text = tvshow.overview
+        firstAirdateLabel.text = tvshow.firstAirDate
+        voteAverageLabel.text = "\(tvshow.voteAverage ?? 0) / 10"
         
     }
 

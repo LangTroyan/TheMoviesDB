@@ -8,31 +8,11 @@
 import Foundation
 import CoreData
 
-class MoviesViewModel {
+class TVShowsViewModel {
     
     var movies: [TVShow]?
     var pagination: Pagination?
     
-//    init(completion: ((Error?) -> Void)? = nil) {
-//        loadMovies(in: Pagination.firstPage) { (error) in
-//            if let error = error {
-//                switch error {
-//                case NetworkError.noInternet:
-//                    if let movies: [TVShow] = PersistenceManager.fetch(from: String(describing: TVShow.self)), movies.count > 0 {
-//                        self.movies = movies
-//                    }
-//                    else {
-//                        completion?(error)
-//                    }
-//                default:
-//                    completion?(error)
-//                }
-//            }
-//            else {
-//                completion?(nil)
-//            }
-//        }
-//    }
     
     func getMoviesCount() -> Int {
         return movies?.count ?? 0
@@ -74,6 +54,14 @@ class MoviesViewModel {
                 completion?(nil)
             case .failure(let error):
                 switch error {
+                case NetworkError.noInternet:
+                    if let tvshows: [TVShow] = PersistenceManager.fetch(from: String(describing: TVShow.self)), tvshows.count > 0 {
+                        self.movies = tvshows
+                        completion?(nil)
+                    }
+                    else {
+                        completion?(error)
+                    }
                 case NetworkError.unauthorized, NetworkError.notFound:
                     completion?(error)
                 default:

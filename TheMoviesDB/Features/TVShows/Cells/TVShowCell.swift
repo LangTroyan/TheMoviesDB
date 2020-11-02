@@ -21,13 +21,13 @@ class MovieCell: UITableViewCell {
                 posterImageView.kf.setImage(with: imageUrl)
             }
             titleLabel.text = movie?.title
-            genreLabel.text = "\(movie?.genreIds?.first ?? 0)"
-            averageLabel.text = "\(movie?.voteAverage ?? 0)"
+            overviewLabel.text = movie?.overview
+            averageLabel.text = "\(movie?.voteAverage ?? 0) / 10"
         }
     }
     
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var genreLabel: UILabel!
+    @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var averageLabel: UILabel!
 }

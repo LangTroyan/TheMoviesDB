@@ -8,20 +8,13 @@
 import UIKit
 import CoreData
 
-class MoviesViewController: BaseViewController {
+class TVShowsViewController: BaseViewController {
 
     // MARK: - Properties -
     // MARK: Public
     @IBOutlet weak var tableView: UITableView!
     // MARK: Private
-    var viewModel: MoviesViewModel?
-
-    // MARK: - Inits -
-    
-    // MARK: - Methods -
-    
-    // MARK: Public
-    // MARK: Private
+    var viewModel: TVShowsViewModel?
     
     // MARK: - UIViewController -
     
@@ -32,12 +25,11 @@ class MoviesViewController: BaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        viewModel = MoviesViewModel()
+        viewModel = TVShowsViewModel()
+
         viewModel?.loadMovies(in: Pagination.firstPage) { error in
             guard error == nil else {
-                self.showErrorAlert(title: LocalizableKeys.error.localized, message: error?.localizedDescription ?? LocalizableKeys.defaultErrorMessage.localized) { _ in
-                    self.viewModel?.loadMovies(in: Pagination.firstPage)
-                }
+                self.showErrorAlert(title: LocalizableKeys.error.localized, message: error?.localizedDescription ?? LocalizableKeys.defaultErrorMessage.localized)
                 return
             }
             self.tableView.reloadData()
@@ -46,7 +38,7 @@ class MoviesViewController: BaseViewController {
 }
 
 // MARK: - UITableViewDataSource -
-extension MoviesViewController: UITableViewDataSource {
+extension TVShowsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let viewModel = viewModel else { return 0 }
         if viewModel.hasNextPage() {
@@ -63,7 +55,8 @@ extension MoviesViewController: UITableViewDataSource {
             // TODO: Show loading cell
         }
         else if let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.Constants.identifier, for: indexPath) as? MovieCell {
-            cell.movie = viewModel.getMovie(for: indexPath)
+            let movie = viewModel.getMovie(for: indexPath)
+            cell.movie = movie
             return cell
         }
         return UITableViewCell()
@@ -76,7 +69,7 @@ extension MoviesViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate -
-extension MoviesViewController: UITableViewDelegate {
+extension TVShowsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
         if indexPath.row + 1 == tableView.numberOfRows(inSection: indexPath.section), viewModel.hasNextPage() {
@@ -90,8 +83,8 @@ extension MoviesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel,
               let movie = viewModel.getMovie(for: indexPath),
-              let vc = MovieDetailsViewControler.instantiate() else { return }
-        vc.tvShow = movie
+              let vc = TVShowDetailsViewController.instantiate() else { return }
+        vc.tvshow = movie
         navigationController?.present(vc, animated: true, completion: nil)
     }
 }

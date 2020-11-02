@@ -5,10 +5,12 @@
 //  Created by Dylan Trujillo on 02/11/2020.
 //
 
-import Foundation
+import UIKit
 
 extension String {
     var localized: String {
-        return NSLocalizedString(self, comment: "")
+        get {
+            return NSLocalizedString(self, comment: "")
+        }
     }
 }

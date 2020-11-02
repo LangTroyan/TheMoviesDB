@@ -1,0 +1,15 @@
+/* 
+  Localizables.strings
+  TheMoviesDB
+
+  Created by Lang Troyan on 01/11/2020.
+  
+*/
+
+"yes" = "Si";
+"no" = "No";
+"ok" = "Ok";
+"error" = "Error";
+"default_error_message" = "Algo ha ido mal...";
+"tvshow_original_title_label" = "Título original: ";
+"tvshow_original_language_label" = "Idioma original: ";
