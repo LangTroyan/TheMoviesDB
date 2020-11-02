@@ -9,9 +9,12 @@ import UIKit
 import Alamofire
 import Kingfisher
 
-class MovieDetailsViewControler: UIViewController {
+class MovieDetailsViewControler: BaseViewController {
 
     // MARK: - Properties -
+    
+    var tvShow: TVShow?
+    
     // MARK: Outlets
     @IBOutlet weak var backdropImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -38,6 +41,11 @@ class MovieDetailsViewControler: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        if let backdropPath = tvShow?.backdropPath,
+           let imageUrl = URL(string: TVShow.Constants.baseImagePath + backdropPath) {
+            backdropImageView.kf.setImage(with: imageUrl)
+        }
         
     }
 

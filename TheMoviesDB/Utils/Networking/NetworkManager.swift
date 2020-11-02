@@ -18,6 +18,14 @@ class NetworkManager: NetworkProtocol {
         do {
             try AF.request(requestable.asURLRequest()).responseJSON(completionHandler: { (response) in
                 guard let data = response.data, response.error == nil else {
+                    switch response.error {
+                    case .sessionTaskFailed(_):
+                        completion(.failure(NetworkError.noInternet))
+                        return
+                    default:
+                        break
+                    }
+                    
                     switch response.error?.responseCode {
                     case 401:
                         completion(.failure(NetworkError.unauthorized))

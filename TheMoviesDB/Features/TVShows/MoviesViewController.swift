@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class MoviesViewController: UIViewController {
+class MoviesViewController: BaseViewController {
 
     // MARK: - Properties -
     // MARK: Public
@@ -31,8 +31,15 @@ class MoviesViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        viewModel = MoviesViewModel() { error in
-            guard error == nil else { return }
+        
+        viewModel = MoviesViewModel()
+        viewModel?.loadMovies(in: Pagination.firstPage) { error in
+            guard error == nil else {
+                self.showErrorAlert(title: LocalizableKeys.error.localized, message: error?.localizedDescription ?? LocalizableKeys.defaultErrorMessage.localized) { _ in
+                    self.viewModel?.loadMovies(in: Pagination.firstPage)
+                }
+                return
+            }
             self.tableView.reloadData()
         }
     }
@@ -78,5 +85,13 @@ extension MoviesViewController: UITableViewDelegate {
                 self.tableView.reloadData()
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewModel = viewModel,
+              let movie = viewModel.getMovie(for: indexPath),
+              let vc = MovieDetailsViewControler.instantiate() else { return }
+        vc.tvShow = movie
+        navigationController?.present(vc, animated: true, completion: nil)
     }
 }

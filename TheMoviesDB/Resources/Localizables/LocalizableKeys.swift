@@ -8,6 +8,14 @@
 import Foundation
 
 enum LocalizableKeys: String {
+    
+    var localized: String {
+        return self.rawValue.localized
+    }
+    
     case yes
     case no
+    case ok
+    case error
+    case defaultErrorMessage = "default_error_message"
 }
